@@ -20,3 +20,43 @@
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 </body>
 </html>
+
+#plugin for search
+<script>
+  window.$docsify = {
+    search: {
+      maxAge: 86400000,
+      paths: 'auto',
+      placeholder: 'Type to search',
+      noData: 'No Results!',
+      depth: 6,
+    }
+  }
+</script>
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+#plugin for emoji
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+
+#plugin for zoom-image
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+
+#plugin for clipboard
+<script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+
+#plugin for gitalk
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: 'Github Application Client ID',
+    clientSecret: 'Github Application Client Secret',
+    repo: 'Github repo',
+    owner: 'Github repo owner',
+    admin: ['Github repo collaborators, only these guys can initialize github issues'],
+    // facebook-like distraction free mode
+    distractionFreeMode: false
+  })
+</script>
