@@ -74,7 +74,9 @@ $$Q_{jt}(\tau, u) - V_{jt}(\tau) \le Q'_{jt}(\tau,u) \le Q'_{jt}(\tau,u)$$
 这个条件强迫 $Q'_{jt}(\tau ,u)$ 在non-optimal action下仍然可以去track $Q_{jt}(\tau ,u)$。这样可以扩大 $Q'_{jt}(\tau ,u)$ 和 $Q'_{jt}(\tau ,\hat u)$ 之间的gap，这个gap可以让算法更stable。
 
 ### counterfactual joint networks
-针对上面的condition，我们提出一种 counterfactual joint network来代替joint action-value network，以计算 $Q_{jt}(\tau, \codt ,u_{-i})$ 和 $Q'_{jt}(\tau, \codt ,u_{-i})$ with only one forward pass.
+针对上面的condition，我们提出一种 counterfactual joint network来代替joint action-value network，以计算 $Q_{jt}(\tau , \cdot ,u_{-i})$ 和 $Q'_{jt}(\tau , \cdot ,u_{-i})$ with only one forward pass.
 每个agent有一个counterfactual joint network，输出是每个action的 $Q_{jt}(\tau, \cdot, u_{-i})$， 输入为其他agent的action。  
 对于joint action-value function，我们使用 $h_{V,i}(\tau_i)$ 和其他agent的combined hidden features $\sum_{j \neq i}h{Q,j}(\tau_j, u_j)$.  
-最后使用 $Q_i(\tau_i, \cdot) + \sum_{j \neq i}Q_j(\tau_j, u_j)$ 为所有agent计算 $Q'_{jt}(\tau, \cdot, u_{-i})$. 为了实现上述结构，可以用 $L_{nopt-min}$ 代替 $L_{nopt}$
+最后使用 $Q_i(\tau_i, \cdot) + \sum_{j \neq i}Q_j(\tau_j, u_j)$ 为所有agent计算 $Q'_{jt}(\tau, \cdot, u_{-i})$. 为了实现上述结构，可以用 $L_{nopt-min}$ 代替 $L_{nopt}$  
+
+在QTRAN-alt中 $L_{td}$ 和 $L_{opt}$ 仍然使用，但是需要为所有agent计算。
