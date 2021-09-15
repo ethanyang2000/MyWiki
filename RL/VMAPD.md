@@ -23,6 +23,7 @@ $\pi (u|s)$代表policy。普通的RL算法只优化累计奖励，但ELIBO说�
 ## Methods
 ### architecture
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD3.png?raw=true">
+
 ### Diverse dec-POMDP
 在PGM中加入潜变量$z$。can discriminate or encode the diverse solutions.为了进行规划并推断潜变量，我们需要求出diverse dec-POMDP的ELIBO，这里我们使用了structured variational inference。在这个方法中，不同部分可以分开优化，即我们可以固定其中一部分。在我们的PGM中，会使用三种approximate functions：  
 + actor networks$q_{\phi_i}(u_t^i|o_{1:t}^i,z)$  
@@ -30,14 +31,14 @@ $\pi (u|s)$代表policy。普通的RL算法只优化累计奖励，但ELIBO说�
 + local observation discriminators $q_{\theta_{loc}^i}(z|o^i_{1:t+1},u_{1:t}^i)$
 固定后两者，即为普通的RL问题。新的ELIBO如下：
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD1.png?raw=true">
-1. trajectories$\tau$从dataset $D$中采样得到，$B$是baseline
-2. 这里$p(z)$是categorical distribution
-3. *diversity term*： 需要最大化以得到多样的联合行为
-4. *information bottleneck* enhances the diversity of the joint behavior and prevents the diversity from degenerating to the behavior of a single agent.
-5. 很多MARL算法加入了entropy，这里合并在baseline中
-6. ELIBO的各个部分不能简单组合。我们借鉴PI controller使用了adjustable coefficients以稳定训练过程。
+1. trajectories$\tau$从dataset $D$中采样得到，$B$是baseline  
+2. 这里$p(z)$是categorical distribution  
+3. *diversity term*： 需要最大化以得到多样的联合行为  
+4. *information bottleneck* enhances the diversity of the joint behavior and prevents the diversity from degenerating to the behavior of a single agent.  
+5. 很多MARL算法加入了entropy，这里合并在baseline中  
+6. ELIBO的各个部分不能简单组合。我们借鉴PI controller使用了adjustable coefficients以稳定训练过程。  
 
-### Modified ELBO with Dynamic Lagrange Multiplier
+### Modified ELBO with Dynamic Lagrange Multiplier  
 diversity dec-POMDP需要在最大化diversity的同时优化累计奖励。这可以表述为约束优化问题：
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD.png?raw=true">
 使用拉格朗日乘子法将其转化为优化问题。
