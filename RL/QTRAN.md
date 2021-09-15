@@ -65,4 +65,16 @@ $$L(\tau, u, r, \tau ' : \theta) = L_{td} + \lambda_{opt}L_{opt} + \lambda_{nopt
 + $L_{opt}$ 和 $L_{nopt}$ 是根据上述条件分解 $Q_{jt}$ 产生的loss。前者保证optimal local action满足条件a，后者保证每一步选择的action满足条件 b。  
 但是验证a是否满足需要进行大量的采样，因为optimal actions在训练时很少会被采用。考虑到我们希望学到 $Q'_{jt}$ 和 $V_{jt}$ 来分解 $Q_{jt}$，我们可以在学习 $L_{opt}$ 和 $L_{nopt}$ 时固定 $Q_{jt}$ 来稳定训练过程。  
 记 $\hat Q_{jt}$ 为固定的 $Q_{jt}$。loss变成如下形式:
-$$
+
+## QTRAN-alt
+上述方法称为QTRAN-base，在实际应用中表现并不好，可能是由于条件b过于loose。因此我们试图提出另一个更强的分解条件。最关键的区别就是对non-optimal actions的作用。在当前条件下，在满足条件b的同时，可以保证至少有一个action使得等式为零。  
+对non-optimal action而言，当
+$$Q_{jt}(\tau, u) - V_{jt}(\tau) \le Q'_{jt}(\tau,u) \le Q'_{jt}(\tau,u)$$
+时条件b可以满足。而在当前条件下，会有一个non-optimal action使得 $Q'_{jt}(\tau ,u)$ 和 $Q'_{jt}(\tau ,\hat u)$ 但是 $Q_{jt}(\tau ,u)$ 比 $Q_{jt}(\tau ,\hat u)$ 小很多。
+这个条件强迫 $Q'_{jt}(\tau ,u)$ 在non-optimal action下仍然可以去track $Q_{jt}(\tau ,u)$。这样可以扩大 $Q'_{jt}(\tau ,u)$ 和 $Q'_{jt}(\tau ,\hat u)$ 之间的gap，这个gap可以让算法更stable。
+
+### counterfactual joint networks
+针对上面的condition，我们提出一种 counterfactual joint network来代替joint action-value network，以计算 $Q_{jt}(\tau, \codt ,u_{-i})$ 和 $Q'_{jt}(\tau, \codt ,u_{-i})$ with only one forward pass.
+每个agent有一个counterfactual joint network，输出是每个action的 $Q_{jt}(\tau, \cdot, u_{-i})$， 输入为其他agent的action。  
+对于joint action-value function，我们使用 $h_{V,i}(\tau_i)$ 和其他agent的combined hidden features $\sum_{j \neq i}h{Q,j}(\tau_j, u_j)$.  
+最后使用 $Q_i(\tau_i, \cdot) + \sum_{j \neq i}Q_j(\tau_j, u_j)$ 为所有agent计算 $Q'_{jt}(\tau, \cdot, u_{-i})$. 为了实现上述结构，可以用 $L_{nopt-min}$ 代替 $L_{nopt}$
