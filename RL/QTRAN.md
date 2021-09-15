@@ -59,3 +59,10 @@ centralized training阶段有两个目标：
 + transformed action-value function $Q'_{jt}$ 需要追踪 $Q_{jt}$ 以保持optimal action一致。
 具体使用了类似DQN的算法，维护了一个target network和replay buffer，loss如下：
 $$L(\tau, u, r, \tau ' : \theta) = L_{td} + \lambda_{opt}L_{opt} + \lambda_{nopt}L_{nopt}$$
+
++ r 是action u得到的reward
++ $L_{td}$ 是逼近实际action-value function的loss，即minimize TD-error。
++ $L_{opt}$ 和 $L_{nopt}$ 是根据上述条件分解 $Q_{jt}$ 产生的loss。前者保证optimal local action满足条件a，后者保证每一步选择的action满足条件 b。  
+但是验证a是否满足需要进行大量的采样，因为optimal actions在训练时很少会被采用。考虑到我们希望学到 $Q'_{jt}$ 和 $V_{jt}$ 来分解 $Q_{jt}$，我们可以在学习 $L_{opt}$ 和 $L_{nopt}$ 时固定 $Q_{jt}$ 来稳定训练过程。  
+记 $\hat Q_{jt}$ 为固定的 $Q_{jt}$。loss变成如下形式:
+$$
