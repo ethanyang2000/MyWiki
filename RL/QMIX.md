@@ -17,6 +17,7 @@ credit assignment
 
 ## Solution
 ## 模型结构
+![](https://github.com/EthanYang233/MyWiki/blob/master/pics/QMIX.jpg)
 QMIX使用了CTDE的AC框架，整个网络包含了Mixing Network(critic)和Agent RNN Network(actor)。
 + Agent RNN Network
 QMIX中每一个 Agent 都由 RNN 网络控制，在训练时你可以为每一个 Agent 个体都训练一个独立的 RNN 网络，同样也可以所有 Agent 复用同一个 RNN 网络。

@@ -32,6 +32,7 @@ $$F(\theta) \ge H[A|S,Z] + E_{z~p(z),s~\pi(z)}[\log q_\phi(z|s) - \log p(z)] = G
 给定一个状态，学习一个判别器来预测这个状态最可能被哪个参数z控制下的策略访问到。同时，给定一个参数z，希望它对应的策略能够访问到和其他参数不一样的状态空间，因此训练该策略的奖励函数可以由前面学习到的判别器来给出，即如果访问到了一个关于参数z”特殊“的状态，就给予较大的奖励。
 
 ### Pipeline 
+![](https://github.com/EthanYang233/MyWiki/blob/master/pics/DIAYN.jpg)
 算法流程：
 第一步，采样一个$z$。初始化环境。
 第二步，与环境交互，得到$s_{t+1}$，每步的$a_t$的产生都受到$z$的影响。
@@ -58,9 +59,11 @@ $$r_z(s,a) = \log q_\phi(z|s) - \log p(z)$$
 $$\hat z = \argmax_z \prod_{s_t\in \tau^*} q_\phi(z|s_t)$$
 
 ### meta-learning
+![](https://github.com/EthanYang233/MyWiki/blob/master/pics/DIAYN4.jpg)
 主要利用了 DIAYN 能够自动产生奖励函数（学习目标）的特点，来避免 meta-learning 中需要人为设计任务的环节。这里 meta-learning 的设定如下。给定一个没有 reward 的 MDP ，即 controlled Markov process （CMP），$C = (S,A,T,\gamma,\rho)$，其中最后一个代表初始状态分布。在该环境下进行探索和学习，之后在给定特定奖励函数之后，希望能够快速地学习到一个较好的策略。大致流程如下图所示。
 
 算法过程如下，先使用 DIAYN 得到一个判别器（其实就是得到一族有意义的奖励函数，或者一族自动生成的 MDP），然后在这一族任务中使用 model-agnostic meta-learning （MAML） 来学习。
+![](https://github.com/EthanYang233/MyWiki/blob/master/pics/DIAYN1.jpg)
 
 ### 关于MAML
 补充一下 MAML 的学习的主要思路。其目标是给定一组任务，希望能够找到一个参数控制的”中间“策略，使得给定一个具体任务的时候，该策略能够快速地调整到该任务下较好的策略。其训练目标如下：
