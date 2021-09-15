@@ -15,8 +15,8 @@ $$KL(q(\theta)||p(\theta|x)) = \int q(\theta)\log \frac{q(\theta)}{p(\theta|x)}d
 那么如何去对一个分布进行优化呢？我们发现，$\log p(x)$可以进行如下转化：
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI1.jpg?raw=true">
 得到的分解结果正好有两项，一项是我们需要的KL散度（红色），另外一项是 “分解剩下来的东西”，一般称之为变分证据下界（Evidence Lower BOund，ELBO）。ELBO顾名思义，由两个部分组成，即Evidence和Lower Bound：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VI6.jpg)
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VI4.jpg)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI6.jpg?raw=true">
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI4.jpg?raw=true">
 仔细看上面的式子，$\log p(x)$不依赖于$q$，在优化问题中是固定的(导数为零)，后面的KL散度和ELBO依赖于$q$。因此，最小化KL散度等价于最大化Evidence Lower Bound。
 $$L(q(\theta)) = \int q(\theta) \log \frac{p(x,\theta)}{q(\theta)}d\theta \to \max_{q(\theta)\in Q}$$
 
@@ -26,15 +26,15 @@ $$L(q(\theta)) = \int q(\theta) \log \frac{p(x,\theta)}{q(\theta)}d\theta \to \m
 根据乘法法则：
 $$q(\theta) = \prod_{j=1}^m q_j(\theta_j|\theta_{\lt j})$$
 mean field为最为简洁的假设，即各个参数$\theta_i$是相互独立的，这里我们使用块坐标上升法(Block Coordinate Assent) 进行优化：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VI2.jpg)
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VI3.jpg)
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/MAVEN2.jpg)
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VI7.jpg)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI2.jpg?raw=true">
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI3.jpg?raw=true">
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/MAVEN2.jpg?raw=true">
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI7.jpg?raw=true">
 具体算法为：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VI.jpg)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI.jpg?raw=true">
 
 使用这种方法时，要注意需要满足的条件（以及如何检验这种条件是否满足）：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VI5.jpg)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI5.jpg?raw=true">
 
 2. 参数化近似（parametric approximation）： parametric family
 在近似分布$q(\theta)$的选取中，我们需要先对q进行一系列的假设。展开来讲，我们需要寻找一个固定的分布族。当然我们可以对分布进行较为简单的假设（如上面的Mean Field），产生的问题就是可能不能捕捉到数据中全部的信息，然而过于复杂的假设又会使得训练的过程变得困难。

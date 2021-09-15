@@ -14,18 +14,18 @@
 ### Dec-POMDP & CTDE
 ### IGM & Factorizable
 定义IGM（Individual-Global-Max）：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN4.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN4.png?raw=true">
 其中$Q_{jt}：\Tau^NN X U^N \to R$是联合action-value-function，$\tau \in \Tau^N$是联合trajectories，假设存在个体action-value-function $[Q_i:\Tau X U \to R]_{i=1}^N$ 满足上述条件，称$[Q_i]$ 在 $\tau$ 下对 $Q_{jt}$ 满足IGM，即 $Q_{jt}(\tau,u)$ 被 $[Q_i(\tau_i,u_i)]$ 分解。若其在任何trajectory下都可分解，则称其可分解。
 
 ### VDN & QMIX
 VDN和QMIX分别具有下面的约束条件，其都是IGM的充分条件。
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN1.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN1.png?raw=true">
 
 ## QTRAN
 QTRAN可以分解任何可分解的task，核心思想是将原始的joint action-value-func映射到一个新的函数，并且二者有相同的optimal action
 
 ### Conditions for factor functions
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN2.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN2.png?raw=true">
 $\hat u_i$ 代表local optimal action $\argmax_{u_i} Q_i(\tau_i,u_i)$ 且 $\hat u = [\hat u_i]_{i=1}^N$  
 
 上述条件在仿射变换下仍然必要  
@@ -62,7 +62,7 @@ centralized training阶段有两个目标：
 + transformed action-value function $Q'_{jt}$ 需要追踪 $Q_{jt}$ 以保持optimal action一致。
 具体使用了类似DQN的算法，维护了一个target network和replay buffer，loss如下：
 $$L(\tau, u, r, \tau ' : \theta) = L_{td} + \lambda_{opt}L_{opt} + \lambda_{nopt}L_{nopt}$$
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN5.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN5.png?raw=true">
 + r 是action u得到的reward
 + $L_{td}$ 是逼近实际action-value function的loss，即minimize TD-error。
 + $L_{opt}$ 和 $L_{nopt}$ 是根据上述条件分解 $Q_{jt}$ 产生的loss。前者保证optimal local action满足条件a，后者保证每一步选择的action满足条件 b。  
@@ -71,7 +71,7 @@ $$L(\tau, u, r, \tau ' : \theta) = L_{td} + \lambda_{opt}L_{opt} + \lambda_{nopt
 
 ## QTRAN-alt
 上述方法称为QTRAN-base，在实际应用中表现并不好，可能是由于条件b过于loose。因此我们试图提出另一个更强的分解条件。
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN7.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN7.png?raw=true">
 最关键的区别就是对non-optimal actions的作用。在当前条件下，在满足条件b的同时，可以保证至少有一个action使得等式为零。  
 对non-optimal action而言，当
 $$Q_{jt}(\tau, u) - V_{jt}(\tau) \le Q'_{jt}(\tau,u) \le Q'_{jt}(\tau,u)$$
@@ -84,5 +84,5 @@ $$Q_{jt}(\tau, u) - V_{jt}(\tau) \le Q'_{jt}(\tau,u) \le Q'_{jt}(\tau,u)$$
 每个agent有一个counterfactual joint network，输出是每个action的 $Q_{jt}(\tau, \cdot, u_{-i})$， 输入为其他agent的action。  
 对于joint action-value function，我们使用 $h_{V,i}(\tau_i)$ 和其他agent的combined hidden features $\sum_{j \neq i}h{Q,j}(\tau_j, u_j)$.  
 最后使用 $Q_i(\tau_i, \cdot) + \sum_{j \neq i}Q_j(\tau_j, u_j)$ 为所有agent计算 $Q'_{jt}(\tau, \cdot, u_{-i})$. 为了实现上述结构，可以用 $L_{nopt-min}$ 代替 $L_{nopt}$  
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN6.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/QTRAN6.png?raw=true">
 在QTRAN-alt中 $L_{td}$ 和 $L_{opt}$ 仍然使用，但是需要为所有agent计算。

@@ -20,7 +20,7 @@ $$G = $$
 
 ## Methods
 ### Structure
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/MAVEN.jpg)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/MAVEN.jpg?raw=true">
 左边是隐空间策略的学习框架。我们将分层策略用$\theta$参数化，将hypernet map用$\phi$参数化。其中hyper net map将潜变量$z$映射到一组权重$W$，用来影响每个agent的效用（或者*modifying the utilities for a particular mode of exploration*）。mixer net用$\psi$参数化。  
 中间是每个agent的actor，用来计算agent的效用，用$\eta$参数化。每个agent的action-obs pair经过GRU和MLP后再和$w$混合，生成Q-value。Q-value用$\epsilon -greedy$策略处理后经过mixer net产生联合q-value。  
 分层策略用$\pi_z(\cdot|s_0;\theta)$表示。可以看作是一个随机变量$x~p(x)$经过以$\theta$参数化的神经网络形成的变换。$p(x)$可以是均匀分布或正态分布。从神经网络的视角看可以记作$z~g_0(x,s_0)$，$s_0$为初始状态。  
@@ -44,7 +44,7 @@ $$r^z_{axu}(\tau) = \log(q_v(z|\sigma(\tau))) - \log(p(z))$$
 $$\max_{v,\phi,\eta,\psi,\theta}J_{RL}(\theta) + \lambda_{MI}J_V(v,\pi,\eta,\psi) - \lambda_{QL}l_{QL}(\phi,\eta,\psi)$$
 
 ## pipeline
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/MAVEN1.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/MAVEN1.png?raw=true">
 + 训练过程中，在每个episode开始时sample一个x，并计算潜变量z，然后按照policy展开。  
 采样完成后保持当前的exploration mode(z)和变分MI奖励，利用greedy policy和Q-learning loss训练$\phi,\eta,\psi,v$。接着利用实际的回报对分层策略进行优化($\theta$)  
 + 在测试时，在episode开始时采样一个$z$，然后对每个q-function使用$arg\max$进行去中心化执行。

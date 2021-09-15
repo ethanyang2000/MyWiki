@@ -13,7 +13,7 @@ VMAPD算法在共享trajectory上加入了ELIBO，并通过策略迭代最大化
 ### cooperative MARL with dec-POMDP
 ### RL with PGM
 最优控制问题可以当作概率推断问题来解决。可以用概率图模型描述MDP：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD2.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD2.png?raw=true">
 我们引入二值随机变量$O_t$，$O_t = 1$表示$t$时刻的动作最优。有概率分布：
 $$p(O_t = 1|s_t,u_t) = exp(r(s_t,u_t))$$
 可以得到ELIBO:
@@ -22,14 +22,14 @@ $\pi (u|s)$代表policy。普通的RL算法只优化累计奖励，但ELIBO说�
 
 ## Methods
 ### architecture
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD3.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD3.png?raw=true">
 ### Diverse dec-POMDP
 在PGM中加入潜变量$z$。can discriminate or encode the diverse solutions.为了进行规划并推断潜变量，我们需要求出diverse dec-POMDP的ELIBO，这里我们使用了structured variational inference。在这个方法中，不同部分可以分开优化，即我们可以固定其中一部分。在我们的PGM中，会使用三种approximate functions：  
 + actor networks$q_{\phi_i}(u_t^i|o_{1:t}^i,z)$  
 + global state discriminator$q_\theta(z|s_{1:t+1},u_{1:t})$  
 + local observation discriminators $q_{\theta_{loc}^i}(z|o^i_{1:t+1},u_{1:t}^i)$
 固定后两者，即为普通的RL问题。新的ELIBO如下：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD1.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD1.png?raw=true">
 1. trajectories$\tau$从dataset $D$中采样得到，$B$是baseline
 2. 这里$p(z)$是categorical distribution
 3. *diversity term*： 需要最大化以得到多样的联合行为
@@ -39,9 +39,9 @@ $\pi (u|s)$代表policy。普通的RL算法只优化累计奖励，但ELIBO说�
 
 ### Modified ELBO with Dynamic Lagrange Multiplier
 diversity dec-POMDP需要在最大化diversity的同时优化累计奖励。这可以表述为约束优化问题：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD.png?raw=true">
 使用拉格朗日乘子法将其转化为优化问题。
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD4.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD4.png?raw=true">
 训练过程中需要调整系数$\alpha_t$，使得reward maximization和policy diversification decoupling。开始时要足够小并逐渐增大。  
 我们使用差值$e_t = R^t_{exp} - R_{target}$作为反馈。  
 $$\alpha_t = \Delta \alpha_t + \alpha_{t-1}$$  
@@ -54,9 +54,9 @@ $$where \Delta \alpha_t = K_P[\sigma(-e(t)) - \sigma(-e(t-1))]$$
 $$f_\theta(s_{1:t+1}^i,u_{1:t}) = q_\theta(z|s_{1:t+1},u_{1:t})$$
 这可以输入global state和joint actions，输出潜变量的分布。另外还有n个local discriminator。  
 所有discriminator都是有监督训练的，优化目标如下：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD5.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD5.png?raw=true">
 为了优化前文的目标，我们构造了一个pseudo reward：
-![](https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD6.png)
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VMAPD6.png?raw=true">
 修改后的total reward 可以写成：
 $$r_{total}(s_t,u_t) = \alpha_t r(s_t,u_t) + r_z(s_t,u_t)$$
 这个reward会存在replay buffer中并用普通RL的方法训练actor和critic  
