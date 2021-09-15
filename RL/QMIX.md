@@ -1,4 +1,4 @@
-# QMIX
+# [QMIX](https://arxiv.org/pdf/1803.11485.pdf)
 ## Background
 + QMIX是一种value based marl算法，可以看作Actor-Critic和DQN的结合。
 + 是一种CTDE方法，利用centralized critic接收全局信息，指导Actor更新。

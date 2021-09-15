@@ -1,4 +1,4 @@
-# QTRAN
+# [QTRAN](https://arxiv.org/pdf/1905.05408.pdf)
 ## Introduction
 在value-based MARL算法中，很重要的一种是对联合action-value-function进行分解。其中的代表算法是QMIX和VDN
 + *VDN*:将联合action-value-function分解为个体价值函数的加和

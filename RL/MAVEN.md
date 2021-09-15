@@ -1,4 +1,4 @@
-# MAVEN
+# [MAVEN](https://arxiv.org/pdf/1910.07483.pdf)
 ## Introduction
 1. 分析了CTDE的常见算法QMIX和QTRAN。  
 QMIX由于单调性约束，无法进行有效的探索，常收敛到次优。

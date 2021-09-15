@@ -1,4 +1,4 @@
-# DIAYN(diversity is all you need)
+# [DIAYN(diversity is all you need)](https://arxiv.org/pdf/1802.06070.pdf)
 ## introduction
 生物体可以在无监督的条件下学习技能，探索环境，对新任务适应性很高。在无监督的条件下学习有很多优点
 + 解决稀疏奖励

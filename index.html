@@ -13,57 +13,56 @@
   <script>
     window.$docsify = {
       name: '',
-      repo: ''
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 6,
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: 'Type to search',
+        noData: 'No Results!',
+        depth: 6,
+      },
+      pagination: {
+        previousText: 'Previous Page',
+        nextText: 'Next Page',
+      }
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  
+  <!-- CDN files for docsify-katex -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+  <!-- or <script src="//cdn.jsdelivr.net/gh/upupming/docsify-katex@latest/dist/docsify-katex.js"></script> -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: 'Github Application Client ID',
+      clientSecret: 'Github Application Client Secret',
+      repo: 'Github repo',
+      owner: 'Github repo owner',
+      admin: ['Github repo collaborators, only these guys can initialize github issues'],
+      // facebook-like distraction free mode
+      distractionFreeMode: false
+    })
+  </script>
+
 </body>
 </html>
 
-<script>
-  window.$docsify = {
-    search: {
-      maxAge: 86400000,
-      paths: 'auto',
-      placeholder: 'Type to search',
-      noData: 'No Results!',
-      depth: 6,
-    },
-    pagination: {
-      previousText: 'Previous Page',
-      nextText: 'Next Page',
-    }
-  }
-</script>
 
-<--!plugin for pagination-->
-<script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-
-<--!plugin for search-->
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-
-<--!plugin for emoji-->
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
-
-<--!plugin for zoom-image-->
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
-
-<--!plugin for clipboard-->
-<script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
-
-<--!plugin for gitalk-->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-<script>
-  const gitalk = new Gitalk({
-    clientID: 'Github Application Client ID',
-    clientSecret: 'Github Application Client Secret',
-    repo: 'Github repo',
-    owner: 'Github repo owner',
-    admin: ['Github repo collaborators, only these guys can initialize github issues'],
-    // facebook-like distraction free mode
-    distractionFreeMode: false
-  })
-</script>
