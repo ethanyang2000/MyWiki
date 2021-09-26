@@ -4,7 +4,7 @@
 + 解决稀疏奖励
 + 更好地探索环境，发现多样化策略
 + 可以作为模型的初始化参数
-+ 不用设计奖励函数
++ 不用设计奖励函数  
 我们希望在完全没有奖励的情况下训练，并假设为了完成目标，我们需要训练出尽可能多的行为策略。其核心的方法就是将skills之间的discriminability作为优化目标。并且两种可区分的skills并不一定有很大的差别。我们希望通过得到尽可能多样的行为，使得策略对扰动具有鲁棒性，并尽可能地对环境进行探索。
 综上，我们提出了无监督RL的方法，并证明简单的探索可以得到多样的行为。这种方法可以用于分层RL的底层策略，可以很快适应新环境，也可以用于模仿学习。
 
@@ -24,7 +24,7 @@ F(\theta) = I(S;Z) + H[A|S] -I(A;Z|S)\\
 = H[Z] - H[Z|S] + H[A|S,Z]
 $$
 上述公式第一项鼓励先验分布$p(z)$有较高的熵。第二项suggests that it should be easy to infer the skill z from the current state,$S$和$Z$之间尽量一一对应，不确定性尽量减小。第三项希望在给定状态和Skill的情况下,每个skill能尽可能随机。  
-但我们不能直接计算$p(z|s)$，因此我们使用一个discriminator $q_\psi(z|s)$ 来近似这个后验分布。这个变分推断给出了一个$F(\theta)$的ELIBO$G(\theta,\phi)$
+但我们不能直接计算$p(z|s)$，因此我们使用一个discriminator $q_\psi(z|s)$ 来近似这个后验分布。这个变分推断给出了一个$F(\theta)$的 ELIBO $G(\theta,\phi)$
 $$F(\theta) \ge H[A|S,Z] + E_{z~p(z),s~\pi(z)}[\log q_\phi(z|s) - \log p(z)] = G(\theta,\phi)$$
 
 ### structure
@@ -34,18 +34,18 @@ $$F(\theta) \ge H[A|S,Z] + E_{z~p(z),s~\pi(z)}[\log q_\phi(z|s) - \log p(z)] = G
 ### Pipeline 
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/DIAYN.jpg?raw=true">  
 算法流程：
-第一步，采样一个$z$。初始化环境。
-第二步，与环境交互，得到$s_{t+1}$，每步的$a_t$的产生都受到$z$的影响。
-第三步，利用$s_{t+1}$和$z$计算伪奖励(Pseudo-reward)
-第四步，使用SAC算法最大化累计奖励，更新policy
-第五步，使用SGD更新判别器参数。
++ 第一步，采样一个$z$。初始化环境。
++ 第二步，与环境交互，得到$s_{t+1}$，每步的$a_t$的产生都受到$z$的影响。
++ 第三步，利用$s_{t+1}$和$z$计算伪奖励(Pseudo-reward)
++ 第四步，使用SAC算法最大化累计奖励，更新policy
++ 第五步，使用SGD更新判别器参数。
 
 ### Implementation
 基于soft-actor-critic实现了DIAYN，学习一个基于潜变量的策略$\pi_\theta(a|s,z)$。
 可以将task reward替换为pseudo-reward以优化上述ELIBO：
 $$r_z(s,a) = \log q_\phi(z|s) - \log p(z)$$
 先验分布$p(z)$使用了categorical distribution。  
-在无监督阶段，我们在每个episode开始之前采样一个skill$z~p(z)$，然后在episode中按照$z$执行动作。agent rewarded for visiting states that are easy to discriminate。discriminator is updated to better infer the skill z from states visited. 还使用了SAC中的entropy regularization
+在无监督阶段，我们在每个episode开始之前采样一个skill $z ~ p(z)$ ，然后在episode中按照$z$执行动作。agent rewarded for visiting states that are easy to discriminate。discriminator is updated to better infer the skill z from states visited. 还使用了SAC中的entropy regularization
 
 ## application
 ### 用于策略初始化

@@ -2,7 +2,7 @@
 ## Motivation
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/BI.jpg?raw=true">  
 贝叶斯模型的训练问题：实际计算中积分部分（Evidence）的计算往往是intractable的。这种情况下，我们有两种方法去进行处理，一种是变分推断（Variational Inference），另一种是马尔科夫蒙特卡洛（MCMC）.  
-主要思路是在一个分布族$Q$中找到后验分布的近似：
+变分推断的主要思路是在一个分布族$Q$中找到后验分布的近似：
 $$p(\theta|x) \approx q(\theta) \in Q$$
 可以利用下述约束条件：
 $$F(q):=KL(q(\theta)||p(\theta|x)) \to \min_{q(\theta) \in Q}$$
@@ -14,7 +14,7 @@ $$KL(q(\theta)||p(\theta|x)) = \int q(\theta)\log \frac{q(\theta)}{p(\theta|x)}d
 然而在KL散度的表达式里还是有后验分布，这个是不能被直接去计算的，因此，变分推断将一个推断问题转化为优化问题，即通过最小化KL散度使得两个分布尽可能接近。  
 那么如何去对一个分布进行优化呢？我们发现，$\log p(x)$可以进行如下转化：
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI1.jpg?raw=true">  
-得到的分解结果正好有两项，一项是我们需要的KL散度（红色），另外一项是 “分解剩下来的东西”，一般称之为变分证据下界（Evidence Lower BOund，ELBO）。ELBO顾名思义，由两个部分组成，即Evidence和Lower Bound：
+得到的分解结果正好有两项，一项是我们需要的KL散度（红色），另外一项是 “分解剩下来的东西”，一般称之为变分证据下界（Evidence Lower Bound，ELBO）。ELBO顾名思义，由两个部分组成，即Evidence和Lower Bound：
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI6.jpg?raw=true">  
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/VI4.jpg?raw=true">  
 仔细看上面的式子，$\log p(x)$不依赖于$q$，在优化问题中是固定的(导数为零)，后面的KL散度和ELBO依赖于$q$。因此，最小化KL散度等价于最大化Evidence Lower Bound。
