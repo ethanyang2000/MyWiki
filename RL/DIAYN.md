@@ -1,19 +1,26 @@
 # [DIAYN(diversity is all you need)](https://arxiv.org/pdf/1802.06070.pdf)
+## abstract
+1. 智能体可以无监督地探索环境、学习技能。
+2. 提出了DIAYN，可以不需要reward学习技能。 maximizing an information theoretic objective using a maximum entropy policy
+3. 结果上看，在机器人仿真中无监督地获得了很多不同的技能。在RL benchmark中尽管没有接收过真实奖励，还是学会了解决真实问题。另外预训练可以作为初始化参数，也可以作为分层RL的底层策略。
+4. 可以作为有效的预训练机制，解决exploration、data efficiency的问题。
+
+
 ## introduction
 生物体可以在无监督的条件下学习技能，探索环境，对新任务适应性很高。在无监督的条件下学习有很多优点
 + 解决稀疏奖励
 + 更好地探索环境，发现多样化策略
 + 可以作为模型的初始化参数
-+ 不用设计奖励函数  
-我们希望在完全没有奖励的情况下训练，并假设为了完成目标，我们需要训练出尽可能多的行为策略。其核心的方法就是将skills之间的discriminability作为优化目标。并且两种可区分的skills并不一定有很大的差别。我们希望通过得到尽可能多样的行为，使得策略对扰动具有鲁棒性，并尽可能地对环境进行探索。
++ 不用设计奖励函数和task
+我们希望在完全没有奖励的情况下训练，并假设为了完成目标，我们需要训练出尽可能多的行为策略，即他们之间各不相同。其核心的方法就是将skills之间的discriminability作为优化目标。并且两种可区分的skills并不一定有很大的差别，states中一些轻微的不同就可以分辨。我们希望通过得到尽可能多样的行为，使得策略对扰动具有鲁棒性，并尽可能地对环境进行探索。
 综上，我们提出了无监督RL的方法，并证明简单的探索可以得到多样的行为。这种方法可以用于分层RL的底层策略，可以很快适应新环境，也可以用于模仿学习。
 
 ## DIAYN
 具体来看，我们的无监督RL范式分为两部分：一部分无监督的探索和一部分监督学习。无监督阶段的目标是均匀地学到更多技能，使得监督阶段最大化task reward变得更容易。由于无监督阶段没有用到task的先验，因此可以用在不同的task中。
 ### basic ideas
-+ 对于有用的skills，我们希望每个skill对应到不同的states
-+ 希望通过states而不是actions来区分skills
-+ 通过随机skills使得agent尽可能地探索state space
++ 对于有用的skills，我们希望skill来代表state，每个skill对应到不同的states（有些state只有特定的skill才能探索到）
++ 希望通过states而不是actions来区分skills。因为actions有可能对环境obs没有改变，因此外界无法观测。
++ 通过随机skills和最大化熵使得agent尽可能地探索state space
 最重要的，此方法最大化skills和states的互信息($I(A;Z)$)，实现idea that the skill should control
 which states the agent visits.另外，这个互信息也说明我们可以从state推测出skill。  
 为了确保state而不是actions用来区分skills，我们最小化skill和actions的互信息($I(A;Z|S)$)。另外将所有skills看作mixture of policies，然后最大化熵$H[A|S]$。  
@@ -23,8 +30,8 @@ F(\theta) = I(S;Z) + H[A|S] -I(A;Z|S)\\
 = (H[Z] - H[Z|S]) + H[A|S] - (H[A|S] - H[A|S,Z])\\
 = H[Z] - H[Z|S] + H[A|S,Z]
 $$
-上述公式第一项鼓励先验分布$p(z)$有较高的熵。第二项suggests that it should be easy to infer the skill z from the current state,$S$和$Z$之间尽量一一对应，不确定性尽量减小。第三项希望在给定状态和Skill的情况下,每个skill能尽可能随机。  
-但我们不能直接计算$p(z|s)$，因此我们使用一个discriminator $q_\psi(z|s)$ 来近似这个后验分布。这个变分推断给出了一个$F(\theta)$的 ELIBO $G(\theta,\phi)$
+上述公式第一项鼓励先验分布 $p(z)$ 有较高的熵，因此我们把 $p(z)$ 的先验固定为均匀分布。第二项suggests that it should be easy to infer the skill z from the current state,$S$和$Z$之间尽量一一对应，不确定性尽量减小。第三项希望在给定状态和Skill的情况下,每个skill能尽可能随机。  
+但我们不能直接计算 $p(z|s)$，因此我们使用一个discriminator $q_\psi(z|s)$ 来近似这个后验分布。这个变分推断给出了一个$F(\theta)$的 ELIBO $G(\theta,\phi)$
 $$F(\theta) \ge H[A|S,Z] + E_{z~p(z),s~\pi(z)}[\log q_\phi(z|s) - \log p(z)] = G(\theta,\phi)$$
 
 ### structure
