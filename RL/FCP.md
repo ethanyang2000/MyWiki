@@ -61,6 +61,13 @@ evaluation with hold-out agents
 ### zero-shot coordination with humans
 run an online study to evaluate our FCP agent and the baseline agents in collaborative
 play with human partners.
-每个受试者和所有agents进行互动，每个agent互动 1min。每互动两个agent之后打分。
+每个受试者和所有agents进行互动，每个agent互动 1min。每互动两个agent之后打分。对结果进行ANOVA分析。
+1. FCP和人类合作最好，得分最高。
+2. 受试者 prefer FCP over baselines
+
+### exploratory behavioral analysis
+我们分析了每个player(human&agent)的动作轨迹。
+1. FCP 的移动占比是最高的，说明它更快速地适应和改变。
+2. FCP对特定 pot 的偏好较少，选择较为平均，说明适应性更好。
 
 
