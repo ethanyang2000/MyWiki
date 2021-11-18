@@ -22,9 +22,10 @@ contributions:
 ### FCP
 <img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/FCP.png?raw=true">
 一个重要问题是打破symmetries。agent应该根据队友的变化做出选择，即不对称的偏好。另外对于熟练和不熟练的队友，即不同的skill，都应该能适应。
-FCP包括两个阶段：
-1. 训练一个diverse pool of partners，包含N个self-play agents。这些agent是单独训练的，可以break symmetries。另外为了表示不同水平，我们对每个agent保存了一些checkpoints
-2. 训练一个FCP-agent。FCP需要适应pool中的agents。  
+FCP包括两个阶段:
+
++ 训练一个diverse pool of partners，包含N个self-play agents。这些agent是单独训练的，可以break symmetries。另外为了表示不同水平，我们对每个agent保存了一些checkpoints
++ 训练一个FCP-agent。FCP需要适应pool中的agents。  
 训练过程使用了V-MPO，ResNet+LSTM。每个episode从population中选两个出来进行游戏。  
 PP & FCP 使用了N=32，均匀采样。FCP使用了 3 个checkpoints。对于architecture diversity，我们使用了有无LSTM，网络宽度16和256四种组合，每种8个，保持N=32.
 BCP的数据集一半用来训练，一半用于evaluation。
@@ -35,9 +36,9 @@ BCP的数据集一半用来训练，一半用于evaluation。
 + population-play
 + behavioral cloning play
 做了如下ablation study:
-+ $FCP_{-T}$代表没有checkpoints的训练
-+ $FCP_{+A}$代表加入了 architecture diversity
-+ $FCP_{-T,+A}$  
++ $FCP_{-T}$ 代表没有checkpoints的训练
++ $FCP_{+A}$ 代表加入了 architecture diversity
++ $FCP_{-T,+A}$    
 
 ## Environments:
 一个研究 zero-shot coordination in human-agent interaction 的环境。  
