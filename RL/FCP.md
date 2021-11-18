@@ -20,7 +20,7 @@ contributions:
 
 ## Methods
 ### FCP
-<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/FCP1.png?raw=true">
+<img src="https://github.com/EthanYang233/MyWiki/blob/master/pics/FCP.png?raw=true">
 一个重要问题是打破symmetries。agent应该根据队友的变化做出选择，即不对称的偏好。另外对于熟练和不熟练的队友，即不同的skill，都应该能适应。
 FCP包括两个阶段：
 1. 训练一个diverse pool of partners，包含N个self-play agents。这些agent是单独训练的，可以break symmetries。另外为了表示不同水平，我们对每个agent保存了一些checkpoints
