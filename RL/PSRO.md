@@ -19,7 +19,8 @@
 
 ## background
 ### normal form game
-($\prod, U, n$) where n means number of players, $\prod = (\prod_1, \prod_2, \cdots, \prod_n) $ means a set of policies. $U:\prod -> R^n$ is a payoff table of utilities for each joint policy played by all players. Extensive normal games 将这个设定扩展到多步的序列问题。  
+normal-form game，即正则形式的博弈，指payoff可以看作是actions的函数。在这种game中players往往同时采取行动。extensive form game则引入了时间的概念，players按次序采取行动。
+($\prod, U, n$) where n means number of players, $\prod = (\prod_1, \prod_2, \cdots, \prod_n)$ means a set of policies. $U:\prod -> R^n$ is a payoff table of utilities for each joint policy played by all players. Extensive normal games 将这个设定扩展到多步的序列问题。  
 players 目标是最大化收益，具体做法是从 $\prod_i$ 中选择一个policy $\sigma_i \in \Delta(\prod_i)$, where $\Delta$ means a distribution over $\prod_i$。在多智能体环境中，$\sigma_i$的度量取决于对手的策略。每个finite extensive form game都可以等价为normal form。  
 有一些已有的算法，例如在零和游戏中：
 + linear programming
